@@ -1,0 +1,173 @@
+ROCK PAPER SCISSOR GAME CODE 
+
+HTML CODE--
+<!-- HTML Code -->
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GAME</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <h1>ROCK PAPER SCISSOR GAME</h1>
+
+    <div class="choices">
+        <div class="choice" id="rock">
+            <img src="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIyLTEyL2pvYjk1OS1lbGVtZW50LWItMDEzNl8yLmpwZw.jpg" />
+        </div>
+        <div class="choice" id="paper">
+            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210705223645/paper.jpeg" />
+        </div>
+        <div class="choice" id="scissor">
+            <img src="https://static.thenounproject.com/png/88666-200.png" />
+        </div>
+    </div>
+
+    <div class="score_board">
+        <div class="score">
+            <p id="PLAYER_SCORE">0</p>
+            <p>USER</p>
+        </div>
+        <div class="score">
+            <p id="COMP_SCORE">0</p>
+            <p>COMP</p>
+        </div>
+    </div>
+    <div class="msg_container">
+        <p id="msg">Play your move</p>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+CSS CODE--
+/* CSS Code */
+* {
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    background-color: hwb(219 37% 32%);
+    color: rgb(22, 29, 34);
+    height: 5rem;
+    text-align: center;
+    line-height: 5rem;
+}
+.choice {
+    height: 165px;
+    width: 165px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.choice:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+img {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border-radius: 30%;
+}
+.choices {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10rem;
+    margin-top: 5rem;
+}
+.score_board {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin-top: 5rem;
+    gap: 6rem;
+}
+#PLAYER_SCORE,
+#COMP_SCORE {
+    font-size: 4rem;
+}
+.score {
+    text-align: center;
+}
+.msg_container {
+    margin-top: 5rem;
+    text-align: center;
+}
+#msg {
+    background-color: hwb(219 37% 32%);
+    color: black;
+    display: inline;
+    font-size: 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+.msg_container:hover {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+
+
+JAVASCRIPT CODE --
+// JavaScript Code (no comments)
+let userScore = 0;
+let compScore = 0;
+
+const choices = document.querySelectorAll(".choice");
+const msg = document.querySelector("#msg");
+const userScorePara = document.querySelector("#PLAYER_SCORE");
+const compScorePara = document.querySelector("#COMP_SCORE");
+
+function getComputerChoice() {
+    const options = ["rock", "paper", "scissor"];
+    const randomIndex = Math.floor(Math.random() * 3);
+    return options[randomIndex];
+}
+
+function playRound(userChoice) {
+    const compChoice = getComputerChoice();
+
+    if (userChoice === compChoice) {
+        msg.innerText = "It's a draw! Both chose " + userChoice;
+        return;
+    }
+
+    let userWin = false;
+    if (userChoice === "rock") {
+        userWin = compChoice === "scissor";
+    } else if (userChoice === "paper") {
+        userWin = compChoice === "rock";
+    } else if (userChoice === "scissor") {
+        userWin = compChoice === "paper";
+    }
+
+    if (userWin) {
+        userScore++;
+        userScorePara.innerText = userScore;
+        msg.innerText = `You win! ${userChoice} beats ${compChoice}`;
+    } else {
+        compScore++;
+        compScorePara.innerText = compScore;
+        msg.innerText = `You lose! ${compChoice} beats ${userChoice}`;
+    }
+}
+
+choices.forEach((choice) => {
+    choice.addEventListener("click", () => {
+        const userChoice = choice.getAttribute("id");
+        playRound(userChoice);
+    });
+});
+
